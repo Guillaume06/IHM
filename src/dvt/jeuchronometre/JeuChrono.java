@@ -1,6 +1,10 @@
 package dvt.jeuchronometre;
 
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -31,13 +35,39 @@ public class JeuChrono extends dvt.devint.Jeu {
     boolean end = false;
     boolean first = true;
     int place = 0;
-    char[] track1 = {'d','f', 'j', 'k', 'j', 'k', 'd', 'f'};
+    ArrayList<ArrayList <Character>> tracks;
+    ArrayList<Character>  track;
+    public ArrayList<ArrayList<Character>> parse(){
+        ArrayList<ArrayList <Character>> ret = new ArrayList<>();
+        ArrayList<Character> track = new ArrayList<>();
+        System.out.println(System.getProperties().get("user.dir") + "\\"+ "tracks.txt");
+        try {
+            char c;
+            BufferedReader br = new BufferedReader(new FileReader(System.getProperties().get("user.dir") + "\\" + "tracks.txt"));
+            do {
+                c = (char) br.read();
+                if (c == ';'){
+                    System.out.println(track);
+                    ret.add(track);
+                    track = new ArrayList<>();
+                }
+                track.add(c);
+            } while(c != '.');
+            ret.add(track);
+            return ret;
+        }catch (Exception e){}
+        return null;
+    }
 
     /**
      * L'initalisation du jeu
      */
     @Override
     public void init() {
+        tracks = parse();
+        Random r = new Random();
+        int random = r.nextInt(tracks.size() -1);
+        track = tracks.get(random);
         world = new JPanel();
         world.setBackground(getForeground());
         world.setLayout(null);
@@ -90,7 +120,7 @@ public class JeuChrono extends dvt.devint.Jeu {
             int seconds = ch.getSeconds();
             if (!end) {
                 HTMLtext = "<html><center>" + ch.getChrono() + "<br /><br />"
-                        + track1[place] + "</center></html>";
+                        + track.get(place) + "</center></html>";
                 record = score;
             } else {
                 end = true;
@@ -124,11 +154,11 @@ public class JeuChrono extends dvt.devint.Jeu {
      */
     public void action(char c) {
         if (end) return;
-            if (c == track1[place]) {
+            if (c == track.get(place)) {
                 count++;
                 place++;
                 score += count;
-                if (place >= track1.length) end = true;
+                if (place >= track.size()) end = true;
 
             } else {
                 count = 0;
