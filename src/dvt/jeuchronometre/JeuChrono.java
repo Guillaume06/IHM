@@ -47,9 +47,9 @@ public class JeuChrono extends dvt.devint.Jeu {
             do {
                 c = (char) br.read();
                 if (c == ';'){
-                    System.out.println(track);
                     ret.add(track);
                     track = new ArrayList<>();
+                    break;
                 }
                 track.add(c);
             } while(c != '.');
