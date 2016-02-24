@@ -64,6 +64,7 @@ public class JeuChrono extends dvt.devint.Jeu {
         count = 0;
         score = 0;
         place = 0;
+        first = true;
         ch = new Chronometer();
         this.pressed = true;
         this.once = false;
@@ -72,6 +73,7 @@ public class JeuChrono extends dvt.devint.Jeu {
         info.setText(CONSIGNE);
         this.getSIVOX().stop();
         this.getSIVOX().playText(CONSIGNE_WITHOUT_HTML,SYNTHESE_MAXIMALE);
+        init();
     }
 
     /**
@@ -79,6 +81,10 @@ public class JeuChrono extends dvt.devint.Jeu {
      */
     @Override
     public void update() {
+        if (first){
+            ch.start();
+            first = false;
+        }
         if (score >= 0) {
             ch.stop();
             int seconds = ch.getSeconds();
@@ -118,13 +124,6 @@ public class JeuChrono extends dvt.devint.Jeu {
      */
     public void action(char c) {
         if (end) return;
-        if (first) {
-            ch.start();
-            this.getSIVOX().stop();
-            this.getSIVOX().playText("La partie est lancee !", SYNTHESE_MAXIMALE);
-            first = false;
-            return;
-        }
             if (c == track1[place]) {
                 count++;
                 place++;
