@@ -52,7 +52,7 @@ public class Menu extends Fenetre {
         
         // les options possibles
         addMenu("Multi joueur", new Action(this, 1));
-        addMenu("Chrono", new Action(this, 2));
+        addMenu("DDR", new Action(this, 2));
         addMenu("Quizz", new Action(this, 3));
         addMenu("Score Jeu 2", new Action(this, 4));
         addMenu("Jeu tuto", new Action(this, (5)));
